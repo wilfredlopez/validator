@@ -1,9 +1,11 @@
-# Tool for working with indexedDB
+# Validator
+
+Utility functions for validating javascript objects and Primitives
 
 <div style="display:grid;grid-gap:1rem;grid-auto-flow:column;width:100%;justify-content:space-between; align-items:center;">
 <div>
-  <a style="display:block;z-index:1;"  href="https://badge.fury.io/js/indexdb-store">
-    <img style="background:transparent;" src="https://badge.fury.io/js/indexdb-store.svg" alt="npm version" height="18">
+  <a style="display:block;z-index:1;"  href="https://badge.fury.io/js/@wilfredlopez/validator">
+    <img style="background:transparent;" src="https://badge.fury.io/js/@wilfredlopez/validator.svg" alt="npm version" height="18">
   </a>
 </div>
 <div>
@@ -21,7 +23,7 @@
 ###### NPM
 
 ```
-npm install indexdb-store
+npm install @wilfredlopez/validator
 ```
 
 ###### Script Tag
@@ -37,23 +39,17 @@ npm install indexdb-store
 
   <body>
     <div>
-      <h1>indexDBStore</h1>
+      <h1>Validator</h1>
     </div>
-    <script src="https://unpkg.com/indexdb-store@latest/dist/index.umd.js"></script>
+    <script src="https://unpkg.com/@wilfredlopez/validator@latest/dist/index.umd.js"></script>
 
     <script>
-      const dbStore = indexDBStore.indexDBStore.createStore(
-        'test-utils',
-        'react-utils'
-      )
-      dbStore('readwrite', db => {
-        db.add({ hello: 'world' }, 'hello')
-      })
-      dbStore('readonly', db => {
-        db.get('hello').onsuccess = function () {
-          console.log({ res: this.result })
-        }
-      })
+      console.log(Validator.isEmail('bad@notemail')) //false
+      console.log(Validator.isEmail('test@gmail.com')) //true
+      console.log(Validator.isNotEmptyString('')) //false
+      console.log(Validator.isNotEmptyString('some data')) //true
+      console.log(Validator.isDate('10/20/2020', 'MM/DD/YYYY')) //true
+      console.log(Validator.isDate('anyInvalidDate')) //false;
     </script>
   </body>
 </html>
@@ -61,66 +57,21 @@ npm install indexdb-store
 
 ###### ES6
 
-### IndexDB Store
-
 ```ts
-import { indexDBStore } from 'indexdb-store'
+import Validator from "@wilfredlopez/validator"
 
-const store = indexDBStore.createStore('WDB', 'myStore', {
-  version: 1,
-  onupgradeHandler: (store, request, event) => {
-    //do transactions that can only happen on upgrade events.
-    store.createIndex('IdIndex', 'id', { unique: true })
-    console.log(request, event)
-  },
-})
-
-//write
-store.readwrite(db => {
-  db.add({ id: '1', name: '1 name' }, '1')
-  db.add({ id: '2', name: '2 name' }, '2')
-})
-
-//get all entries
-store.entries().then(data => {
-  console.log({ entries: data })
-})
-
-//get all values
-store.values().then(values => {
-  console.log('values: ', { values })
-})
-
-//Read
-store.readonly.get('2').then(value => {
-  console.log('value with key 2 is: ', value)
-})
-
-//COUNT: Retrieve the number of records matching the given key
-
-//COUNT: Object API
-const range = IDBKeyRange.bound('0', '2')
-store.count(range).then(result => {
-  console.log(`count is : `, result)
-})
-//COUNT: Function API
-store('readonly', db => {
-  const request = db.count('2')
-  request.onsuccess = function () {
-    console.log(`count is : `, this.result)
-  }
-})
-
-//delete
-store.del('1').then(() => {
-  console.log('Delete complete for key 1')
-})
-
-store.readonly.get('1').then(value => {
-  console.log('value with key 1 is now: ', value)
-})
-//Clear all the data in store.
-store.clear().then(() => {
-  console.log('store is cleared.')
-})
+Validator.isEmail('bad@notemail'); //false
+Validator.isEmail('test@gmail.com'); //true
+Validator.isNotEmptyString(""); //false
+Validator.isNotEmptyString("some data")); //true
+Validator.isDate("10/20/2020", "MM/DD/YYYY") //true
+Validator.isDate("anyInvalidDate") //false;
+Validator.isDate("2020/01/01") //true;
+Validator.isInt("2.1") //false
+Validator.isPort(5000) //true
+Validator.isPort(10.1) //false
+Validator.isPort(80000000) //false
+Validator.isURL("https://www.wilfredlopez.net") //true
+Validator.isURL("www.test.com")//true
+Validator.isURL("www.test.") //false
 ```

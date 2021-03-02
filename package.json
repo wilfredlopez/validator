@@ -1,7 +1,7 @@
 {
   "name": "@wilfredlopez/validator",
   "version": "1.0.0",
-  "description": "Utility class for validating javascript objects and Primitives",
+  "description": "Utility functions for validating javascript objects and Primitives",
   "main": "dist/index.js",
   "browser": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -22,7 +22,7 @@
     "build:js": "set NODE_ENV=production babel src/index.ts --out-dir dist --extensions \".ts,.tsx\" --source-maps inline"
   },
   "keywords": [
-    "indexdb",
+    "validation",
     "typescript"
   ],
   "devDependencies": {
@@ -107,12 +107,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wilfredlopez/@wilfredlopez/validator.git"
+    "url": "git+https://github.com/wilfredlopez/validator.git"
   },
   "author": "Wilfred Lopez",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wilfredlopez/@wilfredlopez/validator/issues"
+    "url": "https://github.com/wilfredlopez/validator/issues"
   },
   "homepage": "https://www.npmjs.com/package/@wilfredlopez/validator",
   "jest": {
