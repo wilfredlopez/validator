@@ -6,6 +6,8 @@ import pkg from './package.json'
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
 const name = 'Validator'
 
+const exports = 'default'
+
 export default {
   input: './tsbuild/index.js',
 
@@ -33,7 +35,8 @@ export default {
 
   output: [
     {
-      exports: 'named',
+      exports,
+      name,
       file: pkg.main,
       format: 'cjs',
       sourcemap: true,
@@ -50,13 +53,14 @@ export default {
     //   sourcemap: true,
     // },
     {
-      exports: 'named',
+      exports,
+      name,
       file: pkg.module,
       format: 'es',
       sourcemap: true,
     },
     {
-      exports: 'named',
+      exports,
       file: pkg.browser,
       // format: "iife",
       format: 'umd',

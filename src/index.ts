@@ -3,7 +3,7 @@ import {
     isUrl, isIP, isPostalCode, isSerializable, isDeepEqual, isDeepEqualReact,
     alpha, alphanumeric, decimal, isEmail, isJSON, isString, isTypeof, isPrimitive,
     isNullOrUndefined, isEmptyObject, isObject, maxLength, minLength, isLength,
-    isEmpty, isUndefined, isArray
+    isEmpty, isUndefined, isArray, isRegex, isSameRegex
 
 } from "./validator"
 
@@ -34,17 +34,14 @@ const Validator = {
     isSerializable,
     minLength,
     maxLength,
-    isLength: isLength,
-    isEmpty: isEmpty,
+    isLength,
+    isEmpty,
+    isRegex,
+    isSameRegex,
     isNotEmptyString(arg: any): arg is string {
         return typeof arg === "string" && arg.trim() !== ""
     },
-    isRegex: (value: unknown): value is RegExp => value instanceof RegExp
 
-    ,
-    isSameRegex(reg1: RegExp, reg2: RegExp) {
-        return reg1.source === reg2.source && reg1.flags === reg2.flags
-    },
 
     /**
      * Check if the string is valid JSON (if it can be parsed to json)
@@ -509,54 +506,6 @@ const Validator = {
     }
 }
 
-export function isDeepEqualWilfred(val1: any, val2: any): boolean {
-    if (Validator.isRegex(val1) && Validator.isRegex(val2)) {
-        return Validator.isSameRegex(val1, val2)
-    }
-    //JSON Doenst work for deep Regex
-    // return JSON.stringify(val1) === JSON.stringify(val2)
-    //   if regular equality.
-    if (val1 === val2) {
-        return true
-    }
-
-    if (Validator.isPrimitive(val1) && Validator.isPrimitive(val2)) {
-        return val1 === val2
-    }
-
-    if (Validator.isArray(val1) && Validator.isArray(val2)) {
-        return arraysEqual(val1, val2)
-    }
-
-    //handle object
-    if (Validator.isObject(val1) && Validator.isObject(val2)) {
-        const keys1 = Object.keys(val1)
-        const keys2 = Object.keys(val2)
-        if (keys1.length !== keys2.length) {
-            return false
-        }
-        if (keys1.length === 0) {
-            // console.log('both are empty')
-            return true
-        }
-        //handle object equality
-        let equal: boolean = true
-        while (keys1.length && keys2.length && equal) {
-            let k1 = keys1.pop()
-            let k2 = keys2.pop()
-            equal = Validator.isDeepEqual(
-                val1[k1 as keyof object],
-                val2[k2 as keyof object],
-            )
-            if (!equal) {
-                return false
-            }
-        }
-        return equal
-    }
-
-    return false
-}
 
 
 
