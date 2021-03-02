@@ -21,7 +21,7 @@ export function maxLength(arg: any, max_length: number) {
 * Validator.isLenghtGreaterThan("hi", 4) //return false
 * 
 */
-export function minLength(arg: any, min_length: number) {
+export function minLength(arg: string | number, min_length: number) {
     return (typeof arg === "string" ||
         typeof arg === "number") && String(arg).length >= min_length
 }
